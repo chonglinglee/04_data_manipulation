@@ -27,51 +27,41 @@ accuracy$RE_z  <- as.numeric(scale(accuracy$RE_Score))
 
 # code the comparison contrasts by assigning dummy coding
 data$Easy_Hard <- as.numeric(with(data, ifelse(SentenceType == "Active" | SentenceType == "Passive", "-1", "1")))
+
 data$Easy <- as.numeric(with(data, ifelse(SentenceType == "Active", "-1",
-  ifelse(SentenceType == "Passive", "1", "0")
-)))
+                                     ifelse(SentenceType == "Passive", "1", "0"))))
+
 data$Hard <- as.numeric(with(data, ifelse(SentenceType == "SRC", "-1",
-  ifelse(SentenceType == "ORC", "1", "0")
-)))
+                                     ifelse(SentenceType == "ORC", "1", "0"))))
 
 data$LinearTrend <- as.numeric(with(data, ifelse(SentenceType == "Active", "-3",
-  ifelse(SentenceType == "Passive", "-1",
-    ifelse(SentenceType == "SRC", "1", "3")
-  )
-)))
+                                            ifelse(SentenceType == "Passive", "-1",
+                                              ifelse(SentenceType == "SRC", "1", "3")))))
 
 
 accuracy$Easy_Hard <- as.numeric(with(accuracy, ifelse(SentenceType == "Active" | SentenceType == "Passive", "-1", "1")))
+
 accuracy$Easy <- as.numeric(with(accuracy, ifelse(SentenceType == "Acive", "-1",
-  ifelse(SentenceType == "Passive", "1", "0")
-)))
+                                             ifelse(SentenceType == "Passive", "1", "0"))))
+
 accuracy$Hard <- as.numeric(with(accuracy, ifelse(SentenceType == "SRC", "-1",
-  ifelse(SentenceType == "ORC", "1", "0")
-)))
+                                             ifelse(SentenceType == "ORC", "1", "0"))))
 
 accuracy$LinearTrend <- as.numeric(with(accuracy, ifelse(SentenceType == "Active", "-3",
-  ifelse(SentenceType == "Passive", "-1",
-    ifelse(SentenceType == "SRC", "1", "3")
-  )
-)))
-
-
-
+                                                    ifelse(SentenceType == "Passive", "-1",
+                                                      ifelse(SentenceType == "SRC", "1", "3"))))
+                                   
+                                   
 
 # code exploratory treatment contrast with Active sentences set as a baseline
 
 data$Condition <- as.factor(with(data, ifelse(SentenceType == "Active", "1",
   ifelse(SentenceType == "Passive", "2",
-    ifelse(SentenceType == "SRC", "3", "4")
-  )
-)))
+    ifelse(SentenceType == "SRC", "3", "4")))))
 
 accuracy$Condition <- as.factor(with(accuracy, ifelse(SentenceType == "Active", "1",
   ifelse(SentenceType == "Passive", "2",
-    ifelse(SentenceType == "SRC", "3", "4")
-  )
-)))
-
+    ifelse(SentenceType == "SRC", "3", "4")))))
 
 data$SentenceType <- as.factor(data$SentenceType)
 accuracy$SentenceType <- as.factor(accuracy$SentenceType)
