@@ -14,6 +14,10 @@ data_path <- here::here("data")
 accuracy <- read_csv(file = file.path(data_path, "raw_data", "Cleaned_211_All_accuracy.csv"), show_col_types = FALSE)
 data <- read_csv(file = file.path(data_path, "raw_data", "Cleaned_211_Correct.csv"), show_col_types = FALSE)
 
+# Show variable names
+colnames(accuracy)
+colnames(data)
+
 # Normalize score values and convert to numeric and add a new column to dataframe
 data$ART_z <- as.numeric(scale(data$ART_score_value))
 data$RE_z  <- as.numeric(scale(data$RE_Score))
