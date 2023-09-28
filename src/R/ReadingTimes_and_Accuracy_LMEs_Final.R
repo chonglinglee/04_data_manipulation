@@ -26,47 +26,54 @@ accuracy$ART_z <- as.numeric(scale(accuracy$ART_score_value))
 accuracy$RE_z  <- as.numeric(scale(accuracy$RE_Score))
 
 # code the comparison contrasts by assigning dummy coding
-data$Easy_Hard <- as.numeric(with(data, ifelse(SentenceType == "Active" | SentenceType == "Passive", "-1", "1")))
 
-data$Easy <- as.numeric(with(data, ifelse(SentenceType == "Active", "-1",
-                                     ifelse(SentenceType == "Passive", "1", "0"))))
+# recoded Easy_Hard, Easy, Hard, and LinearTrend in data based on SentenceType
+data <- data %>% 
+  mutate(Easy_Hard = as.numeric(case_when(SentenceType == "Active" ~ "-1",
+                               SentenceType == "Passive" ~ "-1", 
+                               TRUE ~ "1"))) %>%
+  mutate(Easy = as.numeric(case_when(SentenceType == "Active" ~ "-1",
+                          SentenceType == "Passive" ~ "1",
+                          TRUE ~ "0"))) %>%
+  mutate(Hard = as.numeric(case_when(SentenceType == "SRC" ~ "-1",
+                          SentenceType == "ORC" ~ "1",
+                          TRUE ~ "0"))) %>%
+  mutate(LinearTrend = as.numeric(case_when(SentenceType == "Active" ~ "-3",
+                          SentenceType == "Passive" ~ "-1",
+                          SentenceType == "SRC" ~ "1",
+                          TRUE ~ "3")))  
 
-data$Hard <- as.numeric(with(data, ifelse(SentenceType == "SRC", "-1",
-                                     ifelse(SentenceType == "ORC", "1", "0"))))
+# recoded Easy_Hard, Easy, Hard, and LinearTrend in accuracy based on SentenceType
+accuracy <- accuracy %>% 
+  mutate(Easy_Hard = as.numeric(case_when(SentenceType == "Active" ~ "-1",
+                                          SentenceType == "Passive" ~ "-1", 
+                                          TRUE ~ "1"))) %>%
+  mutate(Easy = as.numeric(case_when(SentenceType == "Active" ~ "-1",
+                                     SentenceType == "Passive" ~ "1",
+                                     TRUE ~ "0"))) %>%
+  mutate(Hard = as.numeric(case_when(SentenceType == "SRC" ~ "-1",
+                                     SentenceType == "ORC" ~ "1",
+                                     TRUE ~ "0"))) %>%
+  mutate(LinearTrend = as.numeric(case_when(SentenceType == "Active" ~ "-3",
+                                            SentenceType == "Passive" ~ "-1",
+                                            SentenceType == "SRC" ~ "1",
+                                            TRUE ~ "3")))  
 
-data$LinearTrend <- as.numeric(with(data, ifelse(SentenceType == "Active", "-3",
-                                            ifelse(SentenceType == "Passive", "-1",
-                                              ifelse(SentenceType == "SRC", "1", "3")))))
-
-
-accuracy$Easy_Hard <- as.numeric(with(accuracy, ifelse(SentenceType == "Active" | SentenceType == "Passive", "-1", "1")))
-
-accuracy$Easy <- as.numeric(with(accuracy, ifelse(SentenceType == "Acive", "-1",
-                                             ifelse(SentenceType == "Passive", "1", "0"))))
-
-accuracy$Hard <- as.numeric(with(accuracy, ifelse(SentenceType == "SRC", "-1",
-                                             ifelse(SentenceType == "ORC", "1", "0"))))
-
-accuracy$LinearTrend <- as.numeric(with(accuracy, ifelse(SentenceType == "Active", "-3",
-                                                    ifelse(SentenceType == "Passive", "-1",
-                                                      ifelse(SentenceType == "SRC", "1", "3")))))
-                                   
-                                   
 
 # code exploratory treatment contrast with Active sentences set as a baseline
+data <- data %>% 
+  mutate(Condition = as.factor(case_when(SentenceType == "Active" ~ "-1",
+                                         SentenceType == "Passive" ~ "2", 
+                                         SentenceType == "SRC" ~ "3",
+                                         TRUE ~ "4"))) %>%
+  mutate(SentenceType = factor(SentenceType))
 
-data$Condition <- as.factor(with(data, ifelse(SentenceType == "Active", "1",
-  ifelse(SentenceType == "Passive", "2",
-    ifelse(SentenceType == "SRC", "3", "4")))))
-
-accuracy$Condition <- as.factor(with(accuracy, ifelse(SentenceType == "Active", "1",
-  ifelse(SentenceType == "Passive", "2",
-    ifelse(SentenceType == "SRC", "3", "4")))))
-
-data$SentenceType <- as.factor(data$SentenceType)
-accuracy$SentenceType <- as.factor(accuracy$SentenceType)
-
-
+accuracy <- accuracy %>% 
+  mutate(Condition = as.factor(case_when(SentenceType == "Active" ~ "-1",
+                                         SentenceType == "Passive" ~ "2", 
+                                         SentenceType == "SRC" ~ "3",
+                                         TRUE ~ "4"))) %>%
+  mutate(SentenceType = factor(SentenceType))
 
 
 # Response time raw and log transformed vs ART and RE in separate models
