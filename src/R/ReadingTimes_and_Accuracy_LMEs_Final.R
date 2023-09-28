@@ -49,7 +49,7 @@ accuracy$Hard <- as.numeric(with(accuracy, ifelse(SentenceType == "SRC", "-1",
 
 accuracy$LinearTrend <- as.numeric(with(accuracy, ifelse(SentenceType == "Active", "-3",
                                                     ifelse(SentenceType == "Passive", "-1",
-                                                      ifelse(SentenceType == "SRC", "1", "3"))))
+                                                      ifelse(SentenceType == "SRC", "1", "3")))))
                                    
                                    
 
